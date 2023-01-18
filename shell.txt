@@ -1,0 +1,122 @@
+Создать двух пользователей (с помощью метода User.objects.create_user('username'))
+
+from django.contrib.auth.models import User
+
+User.objects.create_user('Vladimir')
+User.objects.create_user('Ivan')
+
+Создать два объекта модели Author, связанные с пользователями.
+
+from NewsPortal.models import Author
+
+user1 = User.objects.get(username = 'Vladimir')
+Author.objects.create(user = user1)
+user2 = User.objects.get(username = 'Ivan')
+Author.objects.create(user = user2) 
+
+Добавить 4 категории в модель Category.
+
+from NewsPortal.models import Category
+
+Category.objects.create(name_cat = 'Спорт')
+Category.objects.create(name_cat = 'Политика')
+Category.objects.create(name_cat = 'Здравоохранение')
+Category.objects.create(name_cat = 'Образование') 
+
+Добавить 2 статьи и 1 новость.
+Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+
+from NewsPortal.models import Post 
+
+post_author = Author.objects.get(user = 1)
+post_cat = Category.objects.get(pk = 2) 
+post_name = 'Отказ выдавать визы Россиянам'
+post_text = 'Консульства европейских стран после отмены действия соглашения об упрощенном визовом режиме между Россией и Евросоюзом прекратили выдавать россиянам шенгенские визы на срок больше года, чаще всего визы оформляются на период поездки. Об этом сообщила Ассоциация туроператоров России (АТОР) со ссылкой на информацию туроператоров. Евросоюз с 12 сентября 2022 года приостановил упрощенный визовый режим с Россией. Сбор вырос с 35 до 80 евро, срок рассмотрения анкет увеличился с 15 до 45 дней, а туристам при рассмотрении решили отдавать низкий приоритет (также могут затребовать дополнительные документы). Представитель одного из российских туроператоров отметил, что самое неприятное в сложившейся ситуации — короткий срок выдаваемых виз. По его словам, сейчас визы выдают в лучшем случае на полгода-год. При этом тем, у кого слабая визовая история дают только краткосрочные визы на срок поездки. При этом опрошенные АТОР эксперты считают, что сроки действия виз уже не зависят от визовой истории. В то же время получить шенгенскую визу по-прежнему возможно, отмечают специалисты. По сводным данным туроператоров, на получение шенгена в Москве потребуется в среднем 2,5–3 недели. «Принимают у россиян документы на шенгенскую визу под туристические поездки такие страны, как Австрия, Греция, Хорватия, Италия, Испания, Франция, Греция, Венгрия, Словения, Швейцария», — говорится в сообщении ассоциации. Как указали участники рынка, как и осенью, так и сейчас есть сложности со свободными слотами на подачу документов по предварительной записи в визовые центры Франции и Испании, а легче всего записаться в визовые центры Венгрии и Италии.'
+article = Post.objects.create(post_author = post_author,post_type = 'AR',post_name = post_name, post_text = post_text)
+article.post_cat.add(post_cat)
+
+post_author = Author.objects.get(user = 2)
+post_cat = Category.objects.get(pk = 4) 
+post_name = 'В ЕАО школьники перейдут на дистанционку из-за морозов'
+post_text = 'Образовательным учреждениям в ЕАО рекомендовано с 19 по 25 января перевести детей на дистанционный формат обучения. Это связано с морозами, которые в области ожидают на следующей неделе. По прогнозам, столбик термометра опустится до 40 градусов мороза. Такая температура может привести к обморожениям и простудам. Для детских садов рекомендована организация работы в прежнем режиме - родители приводят детей по собственному усмотрению, - уточнила начальник департамента образования региона Наталья Соловченкова. Она добавила, что дошкольным учреждениям рекомендовано сократить время прогулок на открытом воздухе.'
+article = Post.objects.create(post_author = post_author,post_type = 'PT',post_name = post_name, post_text = post_text)
+article.post_cat.add(post_cat)
+
+post_author = Author.objects.get(user = 1)
+post_cat = Category.objects.get(pk = 1) 
+post_name = 'Как сжигается жир'
+post_text = 'Собственно, если хоть немного вдаться в подробности и осознать, как именно жжется жир, сразу расхочется делать сгибания в сторону, чтобы “убрать бочка”, свисающие с джинсов. Если кратко и просто, то процесс сжигания жира состоит из трех этапов: 1. Мобилизация жира (липолиз) – расщепление триглицеридов (которые хранятся в жировых клетках) до жирных кислот и глицерина с их последующим выходом в кровоток. То есть, под воздействием биохимических реакций организма, поступает “команда” о нехватке энергии и ее необходимости восполнить за счет запасов жира. 2. Затем растворенный в крови жир (в виде жирных кислот) транспортируется в места окисления (сжигания), 3. Окисление – само сжигание жирных кислот для производства энергии. Ученые давно интересовались вопросом можно ли жечь жир локально и провели множество исследований. Мы выбрали все самые заметные и характерные исследования о том, можно ли сжечь жир в каком-то конкретном месте, если тренировать это конкретное место?'
+article = Post.objects.create(post_author = post_author,post_type = 'AR',post_name = post_name, post_text = post_text)
+article.post_cat.add(post_cat)
+post_cat = Category.objects.get(pk = 3) 
+article.post_cat.add(post_cat)
+
+Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий).
+
+from NewsPortal.models import Comment
+
+post_ = Post.objects.get(pk = 1)
+user_ = User.objects.get(pk = 2)
+com_text = 'Что за брееед????'
+comment1 = Comment.objects.create(comment_post = post_, comment_user = user_, comment_text = com_text)
+
+com_text = 'Что с этим миром творится????'
+comment2 = Comment.objects.create(comment_post = post_, comment_user = user_, comment_text = com_text)
+
+post_ = Post.objects.get(pk = 2)
+user_ = User.objects.get(pk = 1)
+com_text = 'Да они дома совсем учиться не будут!'
+comment3 = Comment.objects.create(comment_post = post_, comment_user = user_, comment_text = com_text)
+
+post_ = Post.objects.get(pk = 3)
+user_ = User.objects.get(pk = 2)
+com_text = 'Жир нельзя сжечь локально!'
+comment4 = Comment.objects.create(comment_post = post_, comment_user = user_, comment_text = com_text)
+
+Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+
+post1 = Post.objects.get(pk = 2)
+post1.like()
+post1.like()
+post1.like()
+post3 = Post.objects.get(pk = 3)
+post3.like()
+post3.like()
+
+comment1 = Comment.objects.get(pk = 3)
+comment1.like()
+comment1.like()
+comment1.like()
+comment1.like()
+comment2 = Comment.objects.get(pk = 4)
+comment2.like()
+comment2.like()
+comment2.dislike()
+comment3 = Comment.objects.get(pk = 1)
+comment3.like()
+
+Обновить рейтинги пользователей.
+
+author1 = Author.objects.get(pk = 1)
+author2 = Author.objects.get(pk = 2)
+author1.update_rating()
+author2.update_rating()
+author1.rating
+author2.rating
+
+Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+
+Author.objects.all().order_by('-rating').values('user__username', 'rating')[0]  
+
+Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на 
+лайках/дислайках к этой статье.
+
+Post.objects.all().order_by('-post_rating').values('time_in', 'post_author__user__username','post_rating', 'post_name')[0]
+Post.objects.all().order_by('-post_rating')[0].preview()
+
+Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+best_post_id = Post.objects.all().order_by('-post_rating')[0]
+Comment.objects.filter(comment_post = best_post_id).values('comment_date', 'comment_user', 'comment_rating','comment_text')
+
+
+
