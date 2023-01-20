@@ -56,6 +56,8 @@ class Post(models.Model):
     post_name = models.CharField(max_length = 255)
     post_text = models.TextField()
     post_rating = models.IntegerField(default = 0)
+    def __str__(self):
+        return f'{self.post_name.title()}'
 
     def like(self):
         self.post_rating += 1

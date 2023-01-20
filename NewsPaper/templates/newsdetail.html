@@ -1,0 +1,14 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+
+<h1>{{ sel_news.post_name|censor }} </h1>
+<h3> {{sel_news.time_in|date:'d M Y'}}</h3>
+{{sel_news.post_text|censor}}
+{% endblock content %}
