@@ -2,6 +2,8 @@ from django.shortcuts import render
 from datetime import datetime
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from .models import Post
 from .filters import NewsFilter
@@ -32,7 +34,8 @@ class NewsDetail(DetailView):
     template_name = 'newsdetail.html'
     context_object_name = 'sel_news'
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin,CreateView):
+    permission_required = ('NewsPortal.add_post',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
@@ -42,7 +45,8 @@ class NewsCreate(CreateView):
         news.post_type = 'PT'
         return super().form_valid(form)
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin,CreateView):
+    permission_required = ('NewsPortal.add_post',)
     form_class = NewsForm
     model = Post
     template_name = 'article_edit.html'
@@ -52,7 +56,8 @@ class ArticleCreate(CreateView):
         news.post_type = 'AR'
         return super().form_valid(form)
 
-class NewsUpdate(UpdateView):
+class NewsUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('NewsPortal.change_post',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
@@ -60,7 +65,8 @@ class NewsUpdate(UpdateView):
         news = form.save(commit=False)
         news.post_type = 'PT'
         return super().form_valid(form)
-class ArticleUpdate(UpdateView):
+class ArticleUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('NewsPortal.change_post',)
     form_class = NewsForm
     model = Post
     template_name = 'article_edit.html'
@@ -69,12 +75,12 @@ class ArticleUpdate(UpdateView):
         news.post_type = 'AR'
         return super().form_valid(form)
 
-class NewsDelete(DeleteView):
+class NewsDelete(LoginRequiredMixin,DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('news_list')
 
-class ArticleDelete(DeleteView):
+class ArticleDelete(LoginRequiredMixin,DeleteView):
     model = Post
     template_name = 'article_delete.html'
     success_url = reverse_lazy('news_list')
