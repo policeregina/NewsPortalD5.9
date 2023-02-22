@@ -10,5 +10,6 @@ News
 
 <h1>{{ sel_news.post_name|censor }} </h1>
 <h3> {{sel_news.time_in|date:'d M Y'}}</h3>
+
 {{sel_news.post_text|censor}}
 {% endblock content %}

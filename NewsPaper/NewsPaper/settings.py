@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'NewsPortal',
+    'NewsPortal.apps.NewsportalConfig',
     'django_filters',
     'sign',
     'protect',
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
+DEFAULT_FROM_EMAIL = 'p.seregina2015@yandex.ru'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -148,6 +149,13 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''  # пароль от почты
+EMAIL_USE_SSL = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True

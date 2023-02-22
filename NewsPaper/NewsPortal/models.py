@@ -4,14 +4,10 @@ from django.urls import reverse
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    """
-    Users within the Django authentication system are represented by this
-    model.
-
-    Username and password are required. Other fields are optional.
-    """
 
 
+    def __str__(self):
+        return f'{self.user.get_username()}'
     def update_rating(self):
         set_post = Post.objects.filter(post_author_id=self.id).values('post_rating')
         sum_post = 0
@@ -41,6 +37,11 @@ class Author(models.Model):
 
 class Category(models.Model):
    name_cat = models.CharField(max_length = 255, unique = True)
+   subscribers = models.ManyToManyField(User, through = 'SubscribersCAT')
+
+   def __str__(self):
+       return f'{self.name_cat.title()}'
+
 
 post = 'PT'
 article = 'AR'
@@ -77,6 +78,10 @@ class Post(models.Model):
 class PostCategory(models.Model):
     rel_post = models.ForeignKey(Post, on_delete = models.CASCADE)
     rel_category = models.ForeignKey(Category, on_delete = models.CASCADE)
+
+class SubscribersCAT(models.Model):
+    rel_cat = models.ForeignKey(Category,on_delete = models.CASCADE)
+    rel_user = models.ForeignKey(User, on_delete = models.CASCADE)
 
 class Comment(models.Model):
     comment_post = models.ForeignKey(Post, on_delete = models.CASCADE)

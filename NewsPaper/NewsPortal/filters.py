@@ -9,4 +9,5 @@ class NewsFilter(FilterSet):
        fields = {
            'post_name': ['icontains'],
            'post_type': ['exact'],
+           'post_cat' :['exact'],
        }
