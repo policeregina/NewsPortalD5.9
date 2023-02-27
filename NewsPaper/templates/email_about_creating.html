@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h2> Новая статья на портале {{news.post_name}}!</h2>
+<h2> Новая статья на портале <a href="http://127.0.0.1:8000/{{news.id}}">{{news.post_name}}!</a> </h2>
     <p>  {{ news.post_text|truncatechars:50 }} </p>
 </body>
 </html>

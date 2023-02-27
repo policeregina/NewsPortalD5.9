@@ -37,13 +37,10 @@ def notify_new_post(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Post)
 def notify_new_post(sender, instance, **kwargs):
-    all_posts = Post.objects.filter(post_author=instance.post_author.id, time_in__range=[datetime.date.today(), datetime.date.today()+datetime.timedelta(days=1)])
+    all_posts = Post.objects.filter(post_author=instance.post_author.id, time_in__range=[datetime.date.today(),
+                                                                                         datetime.date.today() +
+                                                                                         datetime.timedelta(days=1)])
     print(all_posts)
-    if len(all_posts) < 3:
-        print('if < 3')
-        instance.post_author.can_create_post = 'True'
-        return instance.post_author.can_create_post
     if len(all_posts) >= 3:
         print('if > 3')
-        instance.post_author.can_create_post = 'False'
-        return instance.post_author.can_create_post
+        raise ValueError('В день можно публиковать только 3 поста!')

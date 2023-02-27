@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_apscheduler',
 ]
 
 SITE_ID = 1
@@ -155,7 +156,10 @@ ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''  # пароль от почты
+EMAIL_HOST_USER = 'p.seregina2015'
+EMAIL_HOST_PASSWORD = 'lqvqokmhpyuyeyvn'  # пароль от почты
 EMAIL_USE_SSL = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25

@@ -7,7 +7,6 @@ from django.shortcuts import redirect
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    can_create_post = models.CharField(max_length=5)
 
     def __str__(self):
         return f'{self.user.get_username()}'
@@ -79,11 +78,7 @@ class Post(models.Model):
     def preview(self):
         return (f'{self.post_text[0:124]}...' )
 
-    def save(self, *args, **kwargs):
-        if self.post_author.can_create_post == 'True':
-            super(Post, self).save(*args, **kwargs)
-        else:
-            redirect('/')
+
 
 
 class PostCategory(models.Model):
