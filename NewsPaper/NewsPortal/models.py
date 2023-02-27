@@ -1,10 +1,13 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.shortcuts import redirect
 
 class Author(models.Model):
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    can_create_post = models.CharField(max_length=5)
 
     def __str__(self):
         return f'{self.user.get_username()}'
@@ -51,13 +54,14 @@ TYPE = [
 ]
 
 class Post(models.Model):
-    time_in = models.DateTimeField(auto_now_add = True)
-    post_author = models.ForeignKey(Author, on_delete = models.CASCADE)
-    post_type = models.CharField(max_length = 2,choices = TYPE, default = post)
-    post_cat = models.ManyToManyField(Category, through = 'PostCategory')
-    post_name = models.CharField(max_length = 255)
+    time_in = models.DateTimeField(auto_now_add=True)
+    post_author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    post_type = models.CharField(max_length=2,choices=TYPE, default=post)
+    post_cat = models.ManyToManyField(Category, through='PostCategory')
+    post_name = models.CharField(max_length=255)
     post_text = models.TextField()
-    post_rating = models.IntegerField(default = 0)
+    post_rating = models.IntegerField(default=0)
+
     def __str__(self):
         return f'{self.post_name.title()}'
 
@@ -75,17 +79,24 @@ class Post(models.Model):
     def preview(self):
         return (f'{self.post_text[0:124]}...' )
 
+    def save(self, *args, **kwargs):
+        if self.post_author.can_create_post == 'True':
+            super(Post, self).save(*args, **kwargs)
+        else:
+            redirect('/')
+
+
 class PostCategory(models.Model):
-    rel_post = models.ForeignKey(Post, on_delete = models.CASCADE)
-    rel_category = models.ForeignKey(Category, on_delete = models.CASCADE)
+    rel_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    rel_category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 class SubscribersCAT(models.Model):
-    rel_cat = models.ForeignKey(Category,on_delete = models.CASCADE)
-    rel_user = models.ForeignKey(User, on_delete = models.CASCADE)
+    rel_cat = models.ForeignKey(Category,on_delete=models.CASCADE)
+    rel_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Comment(models.Model):
-    comment_post = models.ForeignKey(Post, on_delete = models.CASCADE)
-    comment_user = models.ForeignKey(User, on_delete = models.CASCADE)
+    comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    comment_user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment_text = models.TextField()
     comment_date = models.DateTimeField(auto_now_add = True)
     comment_rating = models.IntegerField(default = 0)
